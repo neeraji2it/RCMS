@@ -1,0 +1,68 @@
+<%= form_for @personal,:url => personal_information_client_minor_path(@minor,@personal) do |f| %>
+  <ul class="list-steps">
+    <li class="step-1">
+      <span>1</span>
+      <p>COUNSELING INFORMATION</p>
+    </li>
+    <li class="step-2">
+      <span>2</span>
+      <p>MEDICAL INFORMATION</p>
+    </li>
+    <li class="step-3 active">
+      <span>3</span>
+      <p>PERSONAL BACKGROUND</p>
+    </li>
+  </ul>
+  <div class="boxGray">
+    <% if f.error_messages.blank? == false %>
+      <div id="errorExplanation" class="errorExplanation">
+        <ul><li>Please enter required(*) fields</li></ul>
+      </div>
+    <% end %>
+    <div class="staffrow">
+      <div>Do you believe in God?<em>*</em></div>
+      <div>
+        <%= f.radio_button :believe_in_god,"yes", :id=>"checkbox_box_96"  %><label for="checkbox_box_96" class="cssLabel"><span></span>Yes</label>
+        <%= f.radio_button :believe_in_god,"no", :id=>"checkbox_box_97"  %><label for="checkbox_box_97" class="cssLabel"><span></span>No</label>
+      </div>			
+      <hr />
+    </div>
+    <div class="staffrow">
+      <div>Religious Preference</div>
+      <div><%= f.text_field :religious_preference %></div>
+      <hr />
+    </div>
+    <div class="staffrow">
+      <div>What church do you <br />currently attend?</div>
+      <div><%= f.text_field :current_church %></div><hr />			
+    </div>
+    <div class="staffrow">
+      <div>Are you a member of<br /> Redeemer Presbyterian <br />Church?</div>
+      <div>
+        <%= f.radio_button :member_of_redeemer_church,"yes", :id=>"checkbox_box_98"  %><label for="checkbox_box_98" class="cssLabel"><span></span>Yes</label>
+        <%= f.radio_button :member_of_redeemer_church,"yes", :id=>"checkbox_box_99"  %><label for="checkbox_box_99" class="cssLabel"><span></span>No</label>
+      </div>			
+      <hr />
+    </div>
+    <div class="staffrow">
+      <div>How much influence does your religion have on your day to day activity?</div>
+      <div><%= f.text_area :day_to_day_activity,:rows => 4,:maxlength=>"350" %></div>
+    </div>
+    <div class="clearFix"></div>
+    <hr />
+    <h1 class="icon-no2">Consent And Signature</h1>	
+    <div class="boxGray">
+      <h3>Consent And Signature</h3>
+      <p><%= f.check_box :content_and_signature, :id=>"checkbox_box_57"  %>
+        <label for="checkbox_box_57" class="cssLabel cssheight"><span></span><em style="float: right; margin-top: -42px; width: 901px;">In the event that a Redeemer Counselor is not available to address the needs of the client,<br>due to scheduling or otherwise, Redeemer Counseling Services is authorized to release all<br>intake information to a referred therapist. The consent for release of information avoids<br>any delays in beginning therapy and ensures that the client receives appropriate care.</em></label></p>
+      <h3>Online Signature</h3>
+      <%= f.check_box :online_signature, :id=>"checkbox_box_58"  %>
+      <label for="checkbox_box_58" class="cssLabel cssheight"><span></span><em style="float: right; margin-top: -42px; width: 901px;">By clicking this I approve this, and recognize<br> formatting</em></label>
+      <div class="btn-row">
+        <div class="btn-createnew"><input type="submit" class="btn-submit" title="Submit" value="Submit"><em></em></div>
+      </div>
+      <div class="clearFix"></div>
+    </div>
+    <div class="clearFix"></div>
+  </div>
+<% end %>

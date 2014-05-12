@@ -1,0 +1,108 @@
+<ul class="list-clientinfo">
+  <li>
+    <div class="box">
+      <h4>CLIENT INFORMATION</h4>
+      <div style="float:right;" class="columnLeft-client">(<%= @client.gender == "male" ? "M" : "F" %>)</div>
+      <div class="columnRight-client">
+        NAME <%= @client.full_name %>
+        <p><%= @client.address %><br>
+          <%= @client.city %>, <%= @client.state %> <%= @client.zipcode %></p>
+        <%= @client.email %>
+        <p>HOME      <%= number_to_phone(@client.home) %></p>
+        <p>MOBILE  <%= number_to_phone(@client.mobile) %></p>
+        <p>OFFICE    <%= number_to_phone(@client.work) %></p>
+      </div>
+      <div class="clearFix"></div>
+    </div>
+  </li>
+  <li>
+    <div class="box">
+      <h4>CLIENT INFORMATION</h4>
+      <ul class="list-clientinfo-em">
+        <% prim = @client.primary %>
+        <li>HOME     <%= prim == "home" ? "*" : "" %><%= number_to_phone(@client.home) %></li>
+        <li>MOBILE  <%= prim == "mobile" ? "*" : "" %><%= number_to_phone(@client.mobile) %></li>
+        <li>OFFICE    <%= prim == "work" ? "*" : "" %><%= number_to_phone(@client.work) %></li>
+      </ul>					
+      <h4>EMERGENCY CONTACT</h4>
+      <p><%= @client.contact_name %></p>
+      <p>CONTACT:   <%= number_to_phone(@client.contact_phone) %></p>
+      <div class="clearFix"></div>
+    </div>
+  </li>
+  <!--<li>
+    <div class="box">
+      <h2>REMINDERS</h2>
+      <div id="addRemindersBox1" style="display:none;">
+        <div class="addRemindersContent1">
+          <div class="addRemindersContent1">
+<%#= render :partial => "/reminders/new" %>
+          </div>
+        </div>
+      </div>	
+      <div style='height: 200px;overflow: auto;'>
+        <div id="reminder_section" style='height: 200px;overflow: auto;'>
+<%#= render :partial => "/reminders/reminders" %>
+        </div>
+      </div>
+      <div class="clearFix"></div>
+    </div>
+  </li>-->
+</ul>
+<div class="bor-info"></div>
+<div class="box">
+  <table class="table-clientInfo" cellpadding="0" cellspacing="0" width="100%" border="0">
+    <tr>
+      <td>CASE NUMBER</td>
+      <td>COUNSELOR</td>
+      <td>DAY</td>
+      <td>TIME</td>
+      <td>START DATE</td>
+      <td>REPEAT CYCLE</td>
+      <td>AUTHORIZATIONS</td>
+    </tr>
+    <% @appointments.each do |appointment| %>
+      <% account = PayerAccount.where("case_id = #{appointment.case_id} and client_id = #{@client.id}").last %>
+      <tr>
+        <td><%= appointment.case.number %></td>
+        <td><%= appointment.counselor.full_name if appointment.counselor %></td>
+        <td><%= appointment.start_at.blank? ? '' : appointment.start_at.strftime("%A") %></td>
+        <td><%= appointment.start_at.blank? ? '' : appointment.start_at.strftime("%H:%M") %>-<%= appointment.end_at.blank? ? '' : appointment.end_at.strftime("%H:%M") %></td>
+        <td><%= appointment.start_at.blank? ? '' : appointment.start_at.strftime("%b %d %Y") %></td>
+        <td>2X A MONTH</td>
+        <td><%= SessionPayment.where("case_id = #{appointment.case_id} and client_id = #{@client.id}").count %>/<%= !account.nil? ? account.auth : ""  %></td>
+      </tr>
+    <% end %>
+  </table>
+  <div class="clearFix"></div>
+</div>
+<div class="bor-info"></div>
+<div id="tabs" class="commonr">
+  <div class="caseNumber">
+    <ul class="list-breadCurm">
+      <li class="active"><a href="#" title="Case Number">Case Number</a></li>
+      <li>View All</li>
+    </ul>
+    <input type="text" placeholder="IND - 789 - JK23" name="" title="Case Number" class="input-info input-caseNum">
+  </div>
+  <ul class="menu-main">
+    <li><%= link_to 'Documents',documents_path(:client_id => @client.id),:remote => true %></li>
+    <% if current_user.role == 'counselor' %><li><%= link_to 'PROGRESS NOTES',counselor_progress_notes_path(:appointment_id => @appointment.id),:remote => true %></li>
+      <li><a title="TREATMENT MAP" href="#treatmentMap"><span>TREATMENT MAP</span></a></li><% end %>
+    <li><%= link_to 'Accounting',new_accounting_path(current_user.role,:client_id => @client.id),:remote => true %></li>
+  </ul>
+  <div class="box" id="display_details">
+    <%= render :partial => "/documents/new" %>
+  </div>
+</div>
+<div class="clearFix"></div>
+<style>
+  input[type="file"] {
+    color: #FFFFFF;
+  }
+
+  #doc_error,#cas_error{
+    color:red;
+    text-transform: none;
+  }
+</style>

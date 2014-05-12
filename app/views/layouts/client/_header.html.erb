@@ -1,0 +1,31 @@
+<div class="content">
+  <ul class="list-login">
+    <% if !current_user %>
+      <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+        <li>
+          <p><%= f.email_field :email, :class => "input-email", :title => "Email", :placeholder => "Email" %></p>
+        </li>
+        <li>
+          <p><%= f.password_field :password, :class => "input-password", :title => "Password", :placeholder => "Password" %></p>
+          <a class="forgetPassword" href="/users/password/new" title="Reset Password?">Reset Password?</a>
+        </li>
+        <li>
+          <div class="btn-createnew">
+            <input class="btn-submit" type="submit" title="Login" value="Sign In" name="" /><em></em>
+          </div>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+  <h5>REDEEMER <strong>COUNSELING SERVICES</strong></h5>
+  <nav id="navigation">
+    <ul>
+      <% if !current_user %>
+        <li class="active"><a title="WELCOME" href="/">WELCOME</a></li>
+      <% else %>
+        <li class=<%= (params[:controller] == "client/dashboards" and params[:action] == "index") ? "active" : "" %>><%= link_to "WELCOME", "/", :title => "WELCOME" %></li>
+      <% end %>
+    </ul>
+  </nav>
+  <div class="clearFix"></div>
+</div>

@@ -1,0 +1,27 @@
+<table class="table-accounting" cellpadding="0" cellspacing="0" width="100%" border="0">
+  <tr>
+    <td>Payment Date</td>
+    <td>Case Number</td>
+    <td>SESSION <br />STATUS</td>
+    <td>AUTH</td>
+    <td>FEE</td>
+    <td>COPAY</td>
+    <td>Amount</td>
+    <td>DEBIT</td>
+    <td>BALANCE</td>
+  </tr>
+  <% @payer_payments.each do |session_payment| %>
+    <tr>
+      <td><span><%= session_payment.session_date %></span></td>
+      <td>SESSION <span><%= session_payment.case ? session_payment.case.number : '' %></span></td>
+      <td><%= session_payment.session_status %></td>
+      <td><%= session_payment.auth %></td>
+      <% ses_fee = SessionFee.where("case_id = '#{session_payment.case_id}' and start_date < '#{session_payment.session_date}'").last %>
+      <td><%= ses_fee ? ses_fee.fee : session_payment.fee%></td>
+      <td><%= session_payment.copay %></td>
+      <td><%= session_payment.amount %></td>
+      <td><%= session_payment.debit %></td>
+      <td class="column-green"><%= session_payment.balance %></td>
+    </tr>
+  <% end %>
+</table>

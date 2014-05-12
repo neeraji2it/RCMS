@@ -1,0 +1,22 @@
+<div class="boxContent">
+  <% @progress_notes.each do |progress| %>
+    <p><bdo><%= progress.appointment.case.number %>-<%= progress.appointment.counselor.initial %>-<%= progress.created_at.strftime("%m/%d/%Y") %>-</bdo><%= progress.subjective %>.<%= progress.objective %>.<%= progress.assesment %>.<%= progress.plan %>.</p>
+  <% end %>
+  <div class="clearFix"></div>
+</div>
+<div class="bor-info"></div>
+<h3>PROGRESS NOTES  <span>+</span></h3>
+<div class="commonrow">
+  <div class="columnLeft-clientInfo">
+    <%= render :partial => "counselor/invoices/new" %>
+  </div>
+  <div style='float: left;width:508px;' id='progress_notes_form'>
+    <%= render :partial => 'counselor/progress_notes/new' %>
+  </div>
+  <div class="clearFix"></div>
+</div>
+<style>
+  textarea{
+    width:425px;
+  }
+</style>

@@ -1,0 +1,62 @@
+<div class="commonr">
+  <% if @start_date >= Date.today %>
+    <%= link_to 'LAST WEEK' , counselor_down_status_counselor_dashboards_path(:date => (@date - 1.week),:day =>@date - 1.week),
+      :remote => true, :id => "prev",:class => "arrow-left-week" %>
+  <% end %>
+  <%= link_to 'NEXT WEEK', counselor_down_status_counselor_dashboards_path(:date => (@date + 1.week),:day =>@date + 1.week),
+    :remote => true, :id => "next", :class => "arrow-right-week" %>
+</div>
+
+<div class="box">						
+  <div class="list_carousel caroulproduct">
+    <ul id="caroulproduct">
+      <li>
+        <ul id="collexp-menu1" class="collexpMenu">
+          <% for date in (@start_date..@end_date) %>
+            <li style='width: 95%;'><em><input type="submit" title="Save" value="Save" /></em><div title="MONDAY APRIL 1" class="expanded" style='width:902px;'><%= date.strftime("%A").upcase %> <span><%= date.strftime("%B %d").upcase %></span></div>
+              <ul style='padding: 0px;width:894px;'>
+                <li>
+                  <table class="table-curweek" cellpadding="0" cellspacing="0" width="100%" border="0">
+                    <% appointments = current_user.appointments.where("start_at BETWEEN '#{date} 00:01:01' AND '#{date} 23:59:59'") %>
+                    <% if appointments.exists? %>
+                      <% for appointment in appointments %>
+                        <tr>
+                          <td>
+                            <ul class="list-remindersBox">
+                              <li>
+                                <div class="timeColumn"><%#= appointment.start_at.strftime("%I:%M")+'-'+appointment.end_at.strftime("%I:%M") %></div>
+                                <h4><%= appointment.case.number %></h4>
+                                <p class="columnClient"><%= appointment.case.number %> <abbr>|</abbr>   <span>1/5</span>   <abbr>|</abbr>   <em>auth.</em></p>
+                              </li>
+                            </ul>
+                          </td>
+                            <td colspan="7"></td>
+                        </tr>   
+                      <% end %>
+                    <% else %>
+                      <tr>
+                        <td colspan="9">No Sessions</td>
+                      </tr>
+                    <% end %>
+                  </table>
+                </li>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    setTimeout(function() {
+      $('#collexp-menu1 > li > div.expanded + ul').slideToggle('medium');
+      $('#collexp-menu1 > li > div').click(function() {
+        $('#collexp-menu1 > li > div.expanded').not(this).toggleClass('expanded').toggleClass('collapsed').parent().find('> ul').slideToggle('medium');
+        $(this).toggleClass('expanded').toggleClass('collapsed').parent().find('> ul').slideToggle('medium');
+      });
+    }, 250);
+  });
+
+</script>

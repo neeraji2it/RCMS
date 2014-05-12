@@ -1,0 +1,53 @@
+<%= form_for @session,:url => @session.new_record? ? accountings_path(current_user.role,@session) : accounting_path(current_user.role,@session), :method => @session.new_record? ? :post : :put,:remote => true do |f| %>
+  <%= f.hidden_field :action_name,:value => "accounting" %> 
+  <%= hidden_field_tag "client_id",@client.id if @client %>
+  <%= f.hidden_field :case_id,:value => @case.id if @case %>
+  <div class="grayBox">
+    <%= f.error_messages %>
+    <div class="sessionPayment">
+      <div class="commentPlus" style="cursor: pointer;" onclick="javascript:$('#comment').toggle('slow')">COMMENT</div>
+      <h6 class="GrayBoxHeading">SESSION PAYMENT</h6>
+    </div>
+    <div class="payment">
+      <div>
+        <p>Date</p>
+        <%= f.date_select :session_date, {:include_blank => true, :default => nil,:start_year => 1930} %>
+      </div>
+      <div>
+        <p>Case Number</p>
+        <% if @case %>
+          <%= @case.number %>
+        <% elsif @client %>
+          <%= f.select :case_id,options_for_select([["Select",""]]+Case.all.map{|a| [a.number,a.id]},:selected => f.object.case_id) %>
+        <% end %>
+      </div>
+      <div>
+        <p>Amount</p>
+        <%= f.text_field :amount,:class => "input-amountPayment input-datePayment" %>
+      </div>
+      <div>
+        <p>Payment Type</p>
+        <%= f.select :payment_type,%W(cash ckeque credit_card) %>
+      </div>
+      <div>
+        <p>Payer</p>
+        <% if @case %>
+          <%= f.select :payment_name,options_for_select([["Select",""]]+@case.case_clients.all.map{|a| [a.client.full_name,"Client,#{a.client_id}"]}+Payer.all.map{|a| [a.name_of_org,"Payer,#{a.id}"]},:selected => f.object.payment_name) %>
+        <% elsif @client %>
+          <%= f.select :payment_name,options_for_select([["Select",""],[@client.full_name,"Client,#{@client.id}"]]+Payer.all.map{|a| [a.name_of_org,"Payer,#{a.id}"]},:selected => f.object.payment_name) %>
+        <% end %>
+      </div>
+      <!--<div>
+        <p>Amount</p>
+  <%#=  f.text_field :payment_amount,:class => "input-datePayment" %>
+      </div>-->
+    </div>
+    <div id="comment" style="display: none;">
+      <p>Comment</p>
+      <%= f.text_area :comment,:rows => 2,:cols => 20,:class => "textarea-comment" %>
+    </div>
+    <div class="btn-createnew">
+      <input type="submit" title="SAVE" value="SAVE" name="" /><em></em>
+    </div>
+  </div>
+<% end %>

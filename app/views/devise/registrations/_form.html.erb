@@ -1,0 +1,137 @@
+<div class="boxGray">
+  <% if f.error_messages.blank? == false %>
+    <div id="errorExplanation" class="errorExplanation">
+      <ul><li>Please enter required(*) fields</li></ul>
+    </div>
+  <% end %>
+  <div class="staffrow">
+    <div>Name:</div>
+    <div>
+      <ul class="list-name">
+        <li><p>First<em>*</em></p><%= f.text_field :first_name,:class => "input-name" %></li>
+        <li><p>M. l.</p><%= f.text_field :middle_initial, :class=>"input-midname" %></li>
+        <li><p>Last<em>*</em></p><%= f.text_field :last_name, :class=>"input-name"  %></li>
+      </ul>
+    </div>			
+  </div>
+  <div class="staffrow">
+    <div>ADDRESS<em>*</em>:</div>
+    <div>
+      <p><%= f.text_field :address %></p>
+      <%= f.text_field :city,:class => "input-name",:placeholder => "City" %>
+      <%= f.text_field :state, :class=>"input-midname",:placeholder => "State"%>
+      <%= f.text_field :zipcode, :class=>"input-name",:placeholder => "Zip"  %>
+      <hr />
+    </div>				
+  </div>
+  <div class="staffrow">
+    <div>Phone<em>*</em>:</div>
+    <div>
+      <div class="commonr">
+        <div class="column-medical">Mobile  <%= f.text_field :mobile, :class=>"input-name"  %></div>
+        <div class="column-medical">
+          <%= f.radio_button :primary,"mobile", :id=>"checkbox_box_100"  %>
+          <label class="cssLabel" for="checkbox_box_100">PRIMARY</label>
+        </div>
+      </div>
+      <div class="commonr">
+        <div class="column-medical">Work&nbsp;&nbsp;  <%= f.text_field :work, :class=>"input-name"  %></div>
+        <div class="column-medical">
+          <%= f.radio_button :primary,"work", :id=>"checkbox_box_101"  %>
+          <label class="cssLabel" for="checkbox_box_101">PRIMARY</label>
+        </div>
+      </div>
+      <div class="commonr">
+        <div class="column-medical">Home&nbsp;&nbsp;  <%= f.text_field :home, :class=>"input-name"  %></div>
+        <div class="column-medical">
+          <%= f.radio_button :primary,"home", :id=>"checkbox_box_102"  %>
+          <label class="cssLabel" for="checkbox_box_102">PRIMARY</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if f.object.new_record? %>
+    <div class="staffrow">
+      <div>EMAIL<em>*</em>:<br /><span>Username</span></div>
+      <div>
+        <%= f.email_field :email %>
+      </div>				
+    </div>
+    <div class="staffrow">
+      <div>Password<em>*</em>:</div>
+      <div>
+        <%= f.password_field :password %>
+      </div>				
+    </div>
+    <div class="staffrow">
+      <div>Password<em>*</em>:<br /><span>Confrim</span></div>
+      <div>
+        <%= f.password_field :password_confirmation %>
+      </div>				
+    </div>
+  <% end %>
+  <div class="staffrow">
+    <div>Sex<em>*</em>:</div>
+    <div>
+      <ul class="list-children">
+        <li>
+          <%= f.radio_button :gender,"male", :id=>"checkbox_box_5"  %>
+          <label for="checkbox_box_5" class="cssLabel"><span></span>MALE</label>
+          <%= f.radio_button :gender,"female", :id=>"checkbox_box_6"  %><label for="checkbox_box_6" class="cssLabel"><span></span>FEMALE</label>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="staffrow">
+    <div>Date Of Birth<em>*</em>:</div>
+    <div>
+      <%= f.date_select :date_of_birth, {:include_blank => true, :default => nil,:start_year => 1930} %>
+    </div>
+    <hr />
+  </div>
+  <div class="staffrow">
+    <div>Who referred you or how did you hear about us?</div>
+    <div>
+      <p><%= f.select :who_refered,options_for_select([["Select",""],["Friend or family","Friend or family"],["Internet or website","Internet or website"],["Redeemer Church","Redeemer Church"],["Other church","Other church"],["Former client","Former client"],["School","School"],["Other","Other"]]) %></p>
+      <%= f.text_area :about_us,:rows => 4 %>
+    </div>
+  </div>
+  <div class="clearFix"></div>
+</div>
+<hr />
+<h1 class="icon-no2">Emergency Contact</h1>
+<div class="boxGray">			
+  <div class="staffrow">
+    <div>Name:<em>*</em></div>
+    <div>
+      <ul class="list-name">
+        <li><p>First Name<span>*</span></p><%= f.text_field :contact_name1,:value => f.object.new_record? ? f.object.contact_name1 : (@user and @user.contact_name and f.object.contact_name1 ? f.object.contact_name1 : @user.contact_name.split(" ")[0] ) ,:class => "input-name" %></li>
+        <li><p>Last Name<span>*</span></p><%= f.text_field :contact_name2,:value => f.object.new_record? ? f.object.contact_name2 : (@user and @user.contact_name and f.object.contact_name2 ? f.object.contact_name2 : @user.contact_name.split(" ")[1] )  , :class=>"input-name"  %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="staffrow">
+    <div>Relationship<em>*</em>:</div>
+    <div><%= f.select :relationship,options_for_select([["Select",""],["spouse","spouse"],["friend","friend"],["pastor","pastor"],["relative","relative"],["other","other"]],:selected => f.object.relationship) %></div>				
+  </div>
+  <div class="staffrow">
+    <div>Phone<em>*</em>:</div>
+    <div><%= f.text_field :contact_phone %></div>
+  </div>
+  <div class="staffrow">
+
+  </div>
+  <div class="staffrow">
+    <div>Email:</div>
+    <div><%= f.email_field :contact_email %></div>
+  </div>
+  <div class="btn-createnew">
+    <% if f.object.new_record? %>
+      <input class="btn-submit" type="submit" title="CONTINUE" value="CREATE ACCOUNT" /><em></em>
+    <% else %>
+      <input class="btn-submit" type="submit" title="CONTINUE" value="Update" /><em></em>
+    <% end %>
+  </div>
+  <div class="clearFix"></div>
+</div>
+<div class="clearFix"></div>

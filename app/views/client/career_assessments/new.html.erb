@@ -1,0 +1,165 @@
+<%= form_for @career_assesment, :url => client_career_assessments_path(@career_assesment) do |f| %>
+  <%= f.hidden_field :intake_type,:value => @intake_type %>
+
+  <h1 class="icon-no1">Religious Background</h1>
+  <div class="boxGray">
+    <% if f.error_messages.blank? == false %>
+      <div id="errorExplanation" class="errorExplanation">
+        <ul><li>Please enter required(*) fields</li></ul>
+      </div>
+    <% end %>
+    <div class="staffrow">
+      <div>Do you believe in God?<em>*</em></div>
+      <div>
+        <%= f.radio_button :believe_in_god,"yes",:id => "checkbox_box_1"%><label for="checkbox_box_1" class="cssLabel"><span></span>Yes</label>
+        <%= f.radio_button :believe_in_god, "no", :id=>"checkbox_box_2" %><label for="checkbox_box_2" class="cssLabel"><span></span>No</label>
+      </div>			
+      <hr />
+    </div>
+    <div class="staffrow">
+      <div>Religious Preference</div>
+      <div>
+        <%= f.text_field :religious_preference %></div>
+      <hr />
+    </div>
+    <div class="staffrow">
+      <div>What church do you <br />currently attend?</div>
+      <div>
+        <%= f.text_field :current_church %></div><hr />			
+    </div>
+    <div class="staffrow">
+      <div>Are you a member of<br /> Redeemer Presbyterian <br />Church?</div>
+      <div>
+        <%=f.radio_button :member_of_redeemer_church,"yes",:id=>"checkbox_box_1" %>		<label for="checkbox_box_1" class="cssLabel"><span></span>Yes</label>
+        <%=f.radio_button :member_of_redeemer_church,"no",:id=>"checkbox_box_2" %>	<label for="checkbox_box_2" class="cssLabel"><span></span>No</label>
+      </div>			
+      <hr />
+    </div>
+    <div class="staffrow">
+      <div>How much influence does your religion have on your day to day activity?</div>
+      <div><%= f.text_area :day_to_day_activity,:rows => 4,:maxlength=>"350" %></div>
+    </div>
+    <div class="clearFix"></div>
+  </div>
+  <hr />
+  <h1 class="icon-no2">Occupation</h1>
+  <div class="boxGray">
+    <div class="staffrow">
+      <div>Occupation<em>*</em></div>
+      <div>
+        <%= f.text_field :occupation %>
+      </div>
+    </div>
+    <div class="staffrow">
+      <div>Status<em>*</em></div>
+      <div>
+        <%= f.text_field :status %></div>
+    </div>
+    <div class="staffrow">
+      <div>Employer<em>*</em></div>
+      <div> <%= f.text_field :employer %></div>
+    </div>
+    <div class="staffrow">
+      <div>Annual Income<em>*</em></div>
+      <div><%= f.text_field :annual_income %></div>
+    </div>
+    <div class="staffrow">
+      <div>Time With Current Employer<em>*</em></div>
+      <div><%= f.text_field :time_with_current_emp %></div>
+    </div>
+    <div class="staffrow">
+      <div>How Satisfied Are  You With Your  Occupation?<em>*</em></div>
+      <div><%= f.text_field :satisfy_occupation %></div>
+    </div>
+    <div class="staffrow">
+      <div>Previous Occupations <span>Please Summarize Your Occupational History (List Past Occupations. Employers, And Length Of Employment)<em>*</em>:</span></div>
+      <div><%= f.text_area :previous_occupation,:rows => 4,:maxlength=>"350" %></div>
+    </div>	
+    <div class="clearFix"></div>
+  </div>
+  <hr />
+  <h1 class="icon-no3">Education</h1>
+  <div class="boxGray">
+    <div class="staffrow">
+      <div>School</div>
+      <div><%= f.text_field :school %></div>
+    </div>
+    <div class="staffrow">
+      <div>Field Of Study</div>
+      <div><%= f.text_field :field_of_study %></div>
+    </div>
+    <div class="staffrow">
+      <div>Degree</div>
+      <div><%= f.text_field :degree %></div>
+    </div>
+    <div class="staffrow">
+      <div>Status</div>
+      <div><%= f.text_field :student_status %></div>
+    </div>
+    <div class="staffrow">
+      <div>Grad Date</div>
+      <div>
+        <%= f.date_select :grade_date, {:include_blank => true, :default => nil,:start_year => 1930} %>
+      </div>
+    </div>
+    <div class="clearFix"></div>
+  </div>
+  <hr />
+  <h1><span class="circle">4</span>&nbsp;Counseling Purpose</h1>
+  <div class="boxGray">
+    <div class="staffrow">
+      <div>What Concerns led you to pursue conseling?<em>*</em></div>
+      <div><%= f.text_area :concerns_led_you,:rows => 4,:maxlength=>"350" %></div>
+    </div>
+    <hr />
+    <div class="staffrow">
+      <div>What do you hope to gain through counseling?<em>*</em></div>
+      <div><%= f.text_area :gain_through_counseling,:rows => 4,:maxlength=>"350" %></div>
+    </div>
+    <hr />
+    <div class="staffrow">
+      <div>Who referred you to Redeemer Counseling?<em>*</em></div>
+      <div>
+        <%= f.text_field :referred_you_to_redeemer %>
+      </div>
+    </div>
+    <div class="clearFix"></div>
+  </div>
+
+  <hr />			
+  <h1><span class="circle">5</span>&nbsp;E-signature</h1>
+  <div class="boxGray">
+    <p class="f15"><em>Copy To Come. In the event that a Redeemer Counselor is not available to adderss the needs of the client, <br />due to scheduling or otherwise ,Redeemer Conuseling Services is authorized to  release all intake information<br />to a referred therapist. The consent for release of information avoids any delays in beginning therapy and<br />insures that the client receives appropriate care.</em></p>
+    <p>
+      <%= f.check_box :acts_as_online_sig, :id=>"checkbox_box_56" %><label for="checkbox_box_56" class="cssLabel"><span></span><em style="float: right; margin-top: -40px; width: 901px;">By clicking this I approve this and recognize<br> this acts as an online signature</em></label>
+    </p>
+    <div class="column-information">
+      <p>PASSWORD</p>
+      <%= f.password_field :password %>	
+    </div>
+    <div class="column-information">	
+      <p>DATE:</p>
+      <%= f.date_select :p_date, {:include_blank => true, :default => nil,:start_year => 1930} %>
+    </div>
+    <div class="clearFix"></div>
+  </div>
+  <hr />
+  <h1><span class="circle">6</span>&nbsp;Consent And Signature</h1>	
+  <div class="boxGray">
+    <h3>Consent And Signature</h3>
+    <p>
+      <%= f.check_box :content_and_signature, :id=>"checkbox_box_57" %>
+      <label for="checkbox_box_57" class="cssLabel cssheight"><span></span><em style="float: right; margin-top: -42px; width: 901px;">In the event that a Redeemer Counselor is not available to address the needs of the client,<br>due to scheduling or otherwise, Redeemer Counseling Services is authorized to release all<br>intake information to a referred therapist. The consent for release of information avoids<br>any delays in beginning therapy and ensures that the client receives appropriate care.</em></label></p>
+    <h3>Online Signature</h3>
+    <%= f.check_box :online_signature, :id=>"checkbox_box_58" %>
+    <label for="checkbox_box_58" class="cssLabel cssheight"><span></span><em style="float: right; margin-top: -42px; width: 901px;">By clicking this I approve this, and recognize<br> formatting.</em></label>
+    <div class="btn-row">
+      <div class="btn-createnew">
+        <input type="submit" class="btn-submit" title="Submit" value="Submit"><em></em>
+      </div>
+    </div>
+    <div class="clearFix"></div>
+  </div>
+  <div class="clearFix"></div>
+
+<% end %>
