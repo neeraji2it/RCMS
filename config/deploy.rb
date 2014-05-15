@@ -1,60 +1,69 @@
-# config valid only for Capistrano 3.1
-lock '3.2.1'
+set :stages, %w(production)
+set :default_stage, "production"
+require 'capistrano/ext/multistage'
+require 'bundler/capistrano'
 
-set :default_stage,"production"
-require "bundler/capistrano"
-set :application, 'rcms'
-set :repo_url, 'git@example.com:me/my_repo.git'
 
-# Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
+role (:web) {"#{domain}"}
+role (:app) {"#{domain}"}
+role (:db) { ["#{domain}", {:primary => true}] }
 
-# Default deploy_to directory is /var/www/my_app
-# set :deploy_to, '/var/www/my_app'
 
-# Default value for :scm is :git
-# set :scm, :git
+set :application, "rcms"
+set :scm, :git
+set (:repository) { "#{gitrepo}" }
+set (:deploy_to) { "#{deploy_to}" }
+set :scm_user, "ubuntu"
+ssh_options[:forward_agent] = true
+default_run_options[:pty] = true
 
-# Default value for :format is :pretty
-# set :format, :pretty
 
-# Default value for :log_level is :debug
-# set :log_level, :debug
 
-# Default value for :pty is false
-# set :pty, true
+# If you aren't deploying to /u/apps/#{application} on the target
+# servers (which is the default), you can specify the actual location
+# via the :deploy_to variable:
+# If you aren't using Subversion to manage your source code, specify
+# your SCM below:
 
-# Default value for :linked_files is []
-# set :linked_files, %w{config/database.yml}
 
-# Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+desc "Symlinks database.yml file from shared directory into the latest release"
+task :symlink_shared, :roles => [:app, :db] do
+  run "ln -s #{shared_path}/config/database.yml #{latest_release}/config/database.yml"
+  run "ln -s #{shared_path}/system #{latest_release}/system"
+end
 
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
-# Default value for keep_releases is 5
-# set :keep_releases, 5
+# after "deploy:stop",    "delayed_job:stop"
+# after "deploy:start",   "delayed_job:start"
+# after "deploy:restart", "delayed_job:restart"
+# 
+
+#task :restart_delayed_job, :roles => [:app, :db] do
+#  run "RAILS_ENV=serverdev script/delayed_job stop"
+#  run "RAILS_ENV=serverdev script/delayed_job start"
+#end
+#
+#after 'deploy:finalize_update', :restart_delayed_job
+
+
+after 'deploy:finalize_update', :symlink_shared#, "deploy:migrate"
+#after 'deploy:finalize_update', 'deploy:extractions'
 
 namespace :deploy do
+  desc "Reload the database with seed data"
+  task :seed do
+    run "cd #{current_path}; bundle exec rake db:seed RAILS_ENV=#{rails_env}"
+  end
+end
 
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
-    end
+namespace :deploy do
+  desc "Restart Application"
+  task :restart, :roles => :app do
+    run "touch #{current_path}/tmp/restart.txt"
   end
 
-  after :publishing, :restart
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
+  [:start, :stop].each do |t|
+    desc "#{t} task is a no-op with mod_rails"
+    task t, :roles => :app do ; end
   end
-
 end

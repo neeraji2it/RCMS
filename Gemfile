@@ -14,7 +14,7 @@ gem 'paperclip'
 gem 'htmltoword'
 gem "wicked_pdf"
 gem 'wkhtmltopdf-binary'
-
+gem 'net-ssh', '2.7.0'
 #heroku gems
 #group :production do
 #  # gems specifically for Heroku go here
@@ -37,7 +37,9 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'capistrano'
+gem 'capistrano', '~> 2.15.5'
+gem 'capistrano-ext'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
