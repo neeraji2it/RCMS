@@ -1,6 +1,5 @@
 class AdolesmentIntakesController < ApplicationController
   
-  #GET /new
   def new
     @case = Case.find(params[:case_id])
     @client = @case.intake_form.user
