@@ -46,7 +46,7 @@ end
 #after 'deploy:finalize_update', :restart_delayed_job
 
 
-after 'deploy:finalize_update', :symlink_shared#, "deploy:migrate"
+after 'deploy:finalize_update', :symlink_shared, "deploy:migrate"
 #after 'deploy:finalize_update', 'deploy:extractions'
 
 namespace :deploy do
